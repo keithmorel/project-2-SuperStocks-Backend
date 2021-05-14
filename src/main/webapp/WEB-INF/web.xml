@@ -5,7 +5,7 @@
          http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
 	version="4.0">
 
-	<display-name>SpringMVCDemo</display-name>
+	<display-name>SuperStocks</display-name>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
@@ -14,16 +14,6 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
-
-	<servlet>
-		<description>This is my HelloWorld Servlet</description>
-		<servlet-name>HelloServlet</servlet-name>
-		<servlet-class>com.revature.servlet.HelloServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>HelloServlet</servlet-name>
-		<url-pattern>/HelloServlet</url-pattern>
-	</servlet-mapping>
 	
 	<servlet>
 		<servlet-name>DispatcherServlet</servlet-name>
