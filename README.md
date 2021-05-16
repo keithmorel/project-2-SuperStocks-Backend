@@ -6,7 +6,7 @@
 - Spring Framework
 - Hibernate
 - Angular
-- Intrinio API: https://intrinio.com/
+- TwelveData API: https://twelvedata.com/docs#getting-started
 - Logback
 - JUnit
 - Selenium
