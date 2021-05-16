@@ -25,76 +25,60 @@ import jakarta.validation.Valid;
 
 @Controller
 public class UserController {
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private HttpServletRequest request;
-	
-	@PostMapping(path="login")
-	public ResponseEntity<Object> login(@RequestBody @Valid LoginTemplate loginTemplate) {
-		
-		try {
-			User user = userService.login(loginTemplate.getUsername(), loginTemplate.getPassword());
-			
-			HttpSession session = request.getSession(true);
-			session.setAttribute("loggedInUser", user); // *** Look into JWT instead of this ***
-			
-			return ResponseEntity.status(200).body(new MessageTemplate("Successfully logged in"));
-		} catch (UserNotFoundException e) {
-			return ResponseEntity.status(400).body(new MessageTemplate(e.getMessage()));
-		} catch (BadParameterException e) {
-			return ResponseEntity.status(400).body(new MessageTemplate(e.getMessage()));
-		}
-		
+
+	@PostMapping(path = "login")
+	public ResponseEntity<Object> login(@RequestBody @Valid LoginTemplate loginTemplate)
+			throws BadParameterException, UserNotFoundException {
+
+		User user = userService.login(loginTemplate.getUsername(), loginTemplate.getPassword());
+
+		HttpSession session = request.getSession(true);
+		session.setAttribute("loggedInUser", user); // *** Look into JWT instead of this ***
+
+		return ResponseEntity.status(200).body(new MessageTemplate("Successfully logged in"));
+
 	}
-	
-	@PostMapping(path="register")
-	public ResponseEntity<Object> register(@RequestBody @Valid RegisterTemplate registerTemplate) {
-		
-		try {
-			User user = userService.register(registerTemplate.getUsername(), registerTemplate.getPassword(), registerTemplate.getEmail(),
-					registerTemplate.getFirstName(), registerTemplate.getLastName(), registerTemplate.getRole());
-			
-			HttpSession session = request.getSession(true);
-			session.setAttribute("loggedInUser", user); // *** Look into JWT instead of this ***
-			
-			return ResponseEntity.status(201).body(new MessageTemplate("Successfully registered user"));
-		} catch (BadParameterException e) {
-			return ResponseEntity.status(400).body(new MessageTemplate(e.getMessage()));
-		} catch (RegistrationException e) {
-			return ResponseEntity.status(400).body(new MessageTemplate(e.getMessage()));
-		}
-		
+
+	@PostMapping(path = "register")
+	public ResponseEntity<Object> register(@RequestBody @Valid RegisterTemplate registerTemplate) throws BadParameterException, RegistrationException {
+
+		User user = userService.register(registerTemplate.getUsername(), registerTemplate.getPassword(),
+				registerTemplate.getEmail(), registerTemplate.getFirstName(), registerTemplate.getLastName(),
+				registerTemplate.getRole());
+
+		HttpSession session = request.getSession(true);
+		session.setAttribute("loggedInUser", user); // *** Look into JWT instead of this ***
+
+		return ResponseEntity.status(201).body(new MessageTemplate("Successfully registered user"));
+
 	}
-	
-	@PostMapping(path="logout")
+
+	@PostMapping(path = "logout")
 	public ResponseEntity<Object> logout() {
-		
+
 		HttpSession session = request.getSession(true);
 		session.invalidate();
 		return ResponseEntity.status(200).body(new MessageTemplate("Successfully logged out user"));
-		
-	}
-	
-	@PutMapping(path="user/{id}")
-	public ResponseEntity<Object> updateUserInfo(@RequestBody @Valid UpdateUserTemplate updateUserTemplate, @PathVariable("id") int id) {
-		
-		try {
-			User user = userService.updateUserInfo(id, updateUserTemplate.getUsername(), updateUserTemplate.getPassword(),
-					updateUserTemplate.getEmail(), updateUserTemplate.getFirstName(), updateUserTemplate.getLastName());
-			
-			HttpSession session = request.getSession(true);
-			session.setAttribute("loggedInUser", user); // *** Look into JWT instead of this ***
 
-			return ResponseEntity.status(201).body(new MessageTemplate("Successfully updated user information"));
-		} catch (BadParameterException e) {
-			return ResponseEntity.status(400).body(new MessageTemplate(e.getMessage()));
-		} catch (RegistrationException e) {
-			return ResponseEntity.status(400).body(new MessageTemplate(e.getMessage()));
-		}
-		
+	}
+
+	@PutMapping(path = "user/{id}")
+	public ResponseEntity<Object> updateUserInfo(@RequestBody @Valid UpdateUserTemplate updateUserTemplate, @PathVariable("id") int id) throws BadParameterException {
+
+		User user = userService.updateUserInfo(id, updateUserTemplate.getUsername(), updateUserTemplate.getPassword(),
+				updateUserTemplate.getEmail(), updateUserTemplate.getFirstName(), updateUserTemplate.getLastName());
+
+		HttpSession session = request.getSession(true);
+		session.setAttribute("loggedInUser", user); // *** Look into JWT instead of this ***
+
+		return ResponseEntity.status(201).body(new MessageTemplate("Successfully updated user information"));
+
 	}
 
 }

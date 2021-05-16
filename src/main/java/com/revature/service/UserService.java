@@ -35,8 +35,7 @@ public class UserService {
 	}
 
 	@Transactional(rollbackFor = { BadParameterException.class, RegistrationException.class })
-	public User register(String username, String password, String email, String firstName, String lastName,
-			String role) throws BadParameterException, RegistrationException {
+	public User register(String username, String password, String email, String firstName, String lastName, String role) throws BadParameterException, RegistrationException {
 		
 		int roleId = 1;
 		if (username.trim().equals("") || password.trim().equals("") || email.trim().equals("") || firstName.trim().equals("") ||
@@ -56,8 +55,8 @@ public class UserService {
 		
 	}
 
-	@Transactional(rollbackFor = { BadParameterException.class, RegistrationException.class })
-	public User updateUserInfo(int id, String username, String password, String email, String firstName, String lastName) throws BadParameterException, RegistrationException {
+	@Transactional(rollbackFor = { BadParameterException.class })
+	public User updateUserInfo(int id, String username, String password, String email, String firstName, String lastName) throws BadParameterException {
 
 		if (username.trim().equals("") || password.trim().equals("") || email.trim().equals("") || firstName.trim().equals("") ||
 				lastName.trim().equals("")) {

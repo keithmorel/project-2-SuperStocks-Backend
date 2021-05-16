@@ -30,8 +30,7 @@ public class UserDAO {
 	}
 
 	@Transactional
-	public User registerNewUser(String username, String password, String email, String firstName, String lastName,
-			int roleId) {
+	public User registerNewUser(String username, String password, String email, String firstName, String lastName, int roleId) {
 
 		Session session = sessionFactory.getCurrentSession();
 		String hashedPassword = HashPassword.hashPassword(password);
