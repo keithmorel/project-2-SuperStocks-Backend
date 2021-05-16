@@ -4,8 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -15,36 +13,30 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(uniqueConstraints= { 
-		@UniqueConstraint(columnNames={"username", "email"}),
-		@UniqueConstraint(columnNames= {"username"}),
-		@UniqueConstraint(columnNames= {"email"})
+@Table(uniqueConstraints= {
+		@UniqueConstraint(columnNames= {"name"}),
+		@UniqueConstraint(columnNames= {"symbol"})
 })
 @Data @NoArgsConstructor @AllArgsConstructor
-public class User {
+public class Stock {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@NotBlank
-	private String username;
+	private String name;
 	
 	@NotBlank
-	private String password;
+	private String symbol;
 	
 	@NotBlank
-	private String email;
+	private String exchange;
 	
 	@NotBlank
-	private String firstName;
+	private Double price;
 	
 	@NotBlank
-	private String lastName;
-	
-	@NotBlank
-	@ManyToOne
-	@JoinColumn(name="roleId")
-	private UserRole userRole;
+	private String type;
 
 }
