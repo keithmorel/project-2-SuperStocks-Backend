@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.revature.annotation.LoggedInOnly;
 import com.revature.exception.BadParameterException;
 import com.revature.exception.RegistrationException;
 import com.revature.exception.UserNotFoundException;
@@ -60,6 +61,7 @@ public class UserController {
 	}
 
 	@PostMapping(path = "logout")
+	@LoggedInOnly
 	public ResponseEntity<Object> logout() {
 
 		HttpSession session = request.getSession(true);
@@ -69,6 +71,7 @@ public class UserController {
 	}
 
 	@PutMapping(path = "user/{id}")
+	@LoggedInOnly
 	public ResponseEntity<Object> updateUserInfo(@RequestBody @Valid UpdateUserTemplate updateUserTemplate, @PathVariable("id") int id) throws BadParameterException {
 
 		User user = userService.updateUserInfo(id, updateUserTemplate.getUsername(), updateUserTemplate.getPassword(),

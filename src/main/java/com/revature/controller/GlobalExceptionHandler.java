@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<MessageTemplate> DataIntegrityExceptionHandler(HttpServletRequest request, Exception ex) {
 
 		System.out.println("****IN DATAINTEGRITY EXCEPTION HANDLER****");
-		return ResponseEntity.status(400).body(new MessageTemplate("Failed to update information. Users must have unique username and email."));
+		return ResponseEntity.status(400).body(new MessageTemplate("Failed to update information. Another user already has that username or email."));
 
 	}
 

@@ -41,6 +41,8 @@ public class UserService {
 		if (username.trim().equals("") || password.trim().equals("") || email.trim().equals("") || firstName.trim().equals("") ||
 				lastName.trim().equals("") || role.trim().equals("")) {
 			throw new BadParameterException("All info must be provided and not blank");
+		} else if (!email.matches("^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$")) {
+			throw new BadParameterException("Email must be of the form '[email]@[website].[domain]'");
 		} else if (role.equals("Admin")) {
 			roleId = 2;
 		} else if (!role.equals("User") && !role.equals("Admin")) {
