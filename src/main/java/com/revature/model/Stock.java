@@ -9,8 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -25,41 +23,35 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(uniqueConstraints= { 
-		@UniqueConstraint(columnNames={"username", "email"}),
-		@UniqueConstraint(columnNames= {"username"}),
-		@UniqueConstraint(columnNames= {"email"})
+@Table(uniqueConstraints= {
+		@UniqueConstraint(columnNames= {"name"}),
+		@UniqueConstraint(columnNames= {"symbol"})
 })
 @Data @NoArgsConstructor @AllArgsConstructor
-public class User {
-	
+public class Stock {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="user_id")
+	@Column(name="stock_id")
 	private int id;
 	
 	@NotBlank
-	private String username;
+	private String name;
 	
 	@NotBlank
-	private String password;
+	private String symbol;
 	
 	@NotBlank
-	private String email;
+	private String exchange;
 	
 	@NotBlank
-	private String firstName;
+	private Double price;
 	
 	@NotBlank
-	private String lastName;
+	private String type;
 	
 	@NotBlank
-	@ManyToOne
-	@JoinColumn(name="roleId")
-	private UserRole userRole;
-	
-	@NotBlank
-	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="stock", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@JsonBackReference

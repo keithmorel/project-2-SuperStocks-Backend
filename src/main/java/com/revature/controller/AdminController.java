@@ -30,22 +30,11 @@ public class AdminController {
 
 	@GetMapping(path = "user")
 	@AdminOnly
-	public ResponseEntity<Object> getAllUser() throws UserNotFoundException {
+	public ResponseEntity<Object> getAllUser() {
 
 		List<User> user = adminService.getAllUser();
 
 		return ResponseEntity.status(200).body(user);
 	}
-
-	/*
-	 * In Stock Controller
-	 * 
-	 * Get All Stocks by User
-	 * 
-	 * @GetMapping(path = "user/{id}/stocks")
-	 * 
-	 */
-	
-	
 
 }

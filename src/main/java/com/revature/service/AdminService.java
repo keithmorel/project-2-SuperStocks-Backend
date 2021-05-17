@@ -29,14 +29,9 @@ public class AdminService {
 	}
 	
 	@Transactional(rollbackFor = { UserNotFoundException.class })
-	public List<User> getAllUser() throws UserNotFoundException {
+	public List<User> getAllUser() {
 		
-		try {
-			return adminDAO.getUsers();
-		}catch(NoResultException e) {
-			throw new UserNotFoundException("User does not exist.");
-		}
+		return adminDAO.getUsers();
 	}
-	
-	
+
 }
