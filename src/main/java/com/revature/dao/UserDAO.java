@@ -39,7 +39,9 @@ public class UserDAO {
 		String hashedPassword = HashPassword.hashPassword(password);
 
 		UserRole role = session.get(UserRole.class, roleId);
+
 		User newUser = new User(0, username, hashedPassword, email, firstName, lastName, role, new HashSet<User_Stock>());
+
 		session.persist(newUser);
 
 		return newUser;

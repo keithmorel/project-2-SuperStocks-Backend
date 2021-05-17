@@ -34,6 +34,7 @@ public class AdminDAO {
 		Session session = sessionFactory.getCurrentSession();
 
 		List<User> users = new ArrayList<User>();
+    
 		users = (List<User>) session.createQuery("FROM User", User.class)
 				.getResultList();
 
