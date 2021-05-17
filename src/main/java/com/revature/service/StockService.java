@@ -13,6 +13,7 @@ import com.revature.dao.StockDAO;
 import com.revature.exception.AddStockException;
 import com.revature.exception.BadParameterException;
 import com.revature.exception.StockNotFoundException;
+import com.revature.exception.UserNotFoundException;
 import com.revature.model.Stock;
 
 @Service
@@ -61,9 +62,9 @@ public class StockService {
 	}
 
 	@Transactional(rollbackFor = { StockNotFoundException.class })
-	public void deleteStock(int id) throws StockNotFoundException {
+	public void deleteStock(int userId, int stockId) throws StockNotFoundException, UserNotFoundException {
 
-		stockDAO.deleteStockFromPortfolio(id);
+		stockDAO.deleteStockFromPortfolio(userId, stockId);
 		
 	}
 

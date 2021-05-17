@@ -19,6 +19,7 @@ import com.revature.annotation.LoggedInOnly;
 import com.revature.exception.AddStockException;
 import com.revature.exception.BadParameterException;
 import com.revature.exception.StockNotFoundException;
+import com.revature.exception.UserNotFoundException;
 import com.revature.model.Stock;
 import com.revature.model.User;
 import com.revature.service.StockService;
@@ -85,9 +86,12 @@ public class StockController {
 	
 	@DeleteMapping(path = "stock/{id}")
 	@LoggedInOnly
-	public ResponseEntity<Object> deleteStock(@PathVariable("id") int id) throws StockNotFoundException {
+	public ResponseEntity<Object> deleteStock(@PathVariable("id") int stockId) throws StockNotFoundException, UserNotFoundException {
+		
+		HttpSession session = request.getSession(true);
+		User loggedIn = (User) session.getAttribute("loggedInUser");
 
-		stockService.deleteStock(id);
+		stockService.deleteStock(loggedIn.getId(), stockId);
 
 		return ResponseEntity.status(201).body(new MessageTemplate("Successfully deleted the stock from your portfolio."));
 

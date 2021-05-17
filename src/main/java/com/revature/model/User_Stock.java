@@ -20,7 +20,6 @@ public class User_Stock {
 	@ManyToOne
 	@MapsId("userId")
 	@JoinColumn(name="user_id")
-	
 	private User user;
 	
 	@ManyToOne

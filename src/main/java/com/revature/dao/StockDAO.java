@@ -1,5 +1,6 @@
 package com.revature.dao;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.exception.StockNotFoundException;
+import com.revature.exception.UserNotFoundException;
 import com.revature.model.Stock;
 import com.revature.model.User;
 import com.revature.model.User_Stock;
@@ -65,8 +67,16 @@ public class StockDAO {
 
 		Session session = sessionFactory.getCurrentSession();
 		
-		List<Stock> stocks = session.createQuery("FROM Stock", Stock.class)
+		User user = session.get(User.class, id);
+		
+		List<User_Stock> mappings = session.createQuery("FROM User_Stock WHERE user=:user", User_Stock.class)
+				.setParameter("user", user)
 				.getResultList();
+		
+		List<Stock> stocks = new ArrayList<Stock>();
+		for (User_Stock mapping: mappings) {
+			stocks.add(mapping.getStock());
+		}
 		
 		return stocks;
 		
@@ -95,16 +105,24 @@ public class StockDAO {
 	}
 
 	@Transactional
-	public void deleteStockFromPortfolio(int id) throws StockNotFoundException {
+	public void deleteStockFromPortfolio(int userId, int stockId) throws StockNotFoundException, UserNotFoundException {
 
 		Session session = sessionFactory.getCurrentSession();
-		Stock stock = session.get(Stock.class, id);
+		User user = session.get(User.class, userId);
+		Stock stock = session.get(Stock.class, stockId);
 		
 		if (stock == null) {
 			throw new StockNotFoundException("Failed to update stock. Stock not found.");
+		} else if (user == null) {
+			throw new UserNotFoundException("Failed to update stock. User not found.");
 		}
 		
-		session.delete(stock);
+		User_Stock mapping = (User_Stock) session.createQuery("FROM User_Stock WHERE user=:user AND stock=:stock", User_Stock.class)
+				.setParameter("user", user)
+				.setParameter("stock", stock)
+				.getSingleResult();
+		
+		session.delete(mapping);
 		
 	}
 
