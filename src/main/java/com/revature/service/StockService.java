@@ -32,14 +32,14 @@ public class StockService {
 	}
 
 	@Transactional(rollbackFor = { BadParameterException.class, AddStockException.class })
-	public Stock addStock(String name, String symbol, String exchange, Double price, String type) throws BadParameterException, AddStockException {
+	public Stock addStock(int id, String name, String symbol, String exchange, Double price, String type) throws BadParameterException, AddStockException {
 
 		if (name.trim().equals("") || symbol.trim().equals("") || exchange.trim().equals("") || type.trim().equals("")) {
 			throw new BadParameterException("All stock information is required.");
 		}
 		
 		try {
-			return stockDAO.addNewStock(name, symbol, exchange, price, type);
+			return stockDAO.addNewStock(id, name, symbol, exchange, price, type);
 		} catch (PersistenceException e) {
 			throw new AddStockException("Failed to add stock. That stock is already in your portfolio.");
 		}

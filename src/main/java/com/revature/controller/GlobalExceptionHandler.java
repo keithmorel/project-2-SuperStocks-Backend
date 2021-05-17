@@ -18,6 +18,8 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<MessageTemplate> MyGlobalExceptionHandler(HttpServletRequest request, Exception ex) {
 
 		System.out.println("****IN GLOBAL EXCEPTION HANDLER****");
+		System.out.println(request);
+		System.out.println(ex);
 		return ResponseEntity.status(400).body(new MessageTemplate(ex.getMessage()));
 
 	}

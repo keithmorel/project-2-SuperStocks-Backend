@@ -38,7 +38,7 @@ public class StockController {
 
 	@GetMapping(path = "stock/{id}")
 	@LoggedInOnly
-	public ResponseEntity<Object> getStockById(@PathVariable("id") int id) throws StockNotFoundException {
+	public ResponseEntity<Stock> getStockById(@PathVariable("id") int id) throws StockNotFoundException {
 
 		Stock stock = stockService.getStockById(id);
 
@@ -50,7 +50,10 @@ public class StockController {
 	@LoggedInOnly
 	public ResponseEntity<Object> addStock(@RequestBody @Valid StockTemplate stockTemplate) throws BadParameterException, AddStockException {
 
-		Stock stock = stockService.addStock(stockTemplate.getName(), stockTemplate.getSymbol(), stockTemplate.getExchange(),
+		HttpSession session = request.getSession(true);
+		User loggedIn = (User) session.getAttribute("loggedInUser");
+		
+		Stock stock = stockService.addStock(loggedIn.getId(), stockTemplate.getName(), stockTemplate.getSymbol(), stockTemplate.getExchange(),
 				stockTemplate.getPrice(), stockTemplate.getType());
 
 		return ResponseEntity.status(201).body(stock);

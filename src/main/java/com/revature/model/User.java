@@ -1,18 +1,28 @@
 package com.revature.model;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(uniqueConstraints= { 
@@ -25,6 +35,7 @@ public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="user_id")
 	private int id;
 	
 	@NotBlank
@@ -46,5 +57,12 @@ public class User {
 	@ManyToOne
 	@JoinColumn(name="roleId")
 	private UserRole userRole;
+	
+	@NotBlank
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
+	@JsonBackReference
+    private Set<User_Stock> mappings;
 
 }
