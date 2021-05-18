@@ -15,7 +15,7 @@ import com.revature.template.MessageTemplate;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	
-	private Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+	private static Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 	// Global Exception Handler, will catch all exceptions that don't have a more specific exception handled by another method below
 	@ExceptionHandler(Exception.class)
@@ -37,8 +37,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<MessageTemplate> dataIntegrityExceptionHandler(HttpServletRequest request, Exception ex) {
 
-		logger.warn("Handling DataIntegrityViolationException: " + request + "\n" + ex);
-		return ResponseEntity.status(400).body(new MessageTemplate("Failed to update information. Another user already has that username or email."));
+		logger.warn("Handling DataIntegrityViolationException: " + request.getMethod() + " to: " + request.getRequestURI() + "\n" + ex);
+		return ResponseEntity.status(400).body(new MessageTemplate("Duplicate Entry to table."));
 
 	}
 

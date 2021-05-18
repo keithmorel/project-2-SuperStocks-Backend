@@ -33,7 +33,7 @@ import jakarta.validation.Valid;
 @Controller
 public class StockController {
 	
-	private Logger logger = LoggerFactory.getLogger(StockController.class);
+	private static final Logger logger = LoggerFactory.getLogger(StockController.class);
 
 	@Autowired
 	private StockService stockService;
@@ -47,8 +47,11 @@ public class StockController {
 	@LoggedInOnly
 	public ResponseEntity<Stock> getStockById(@PathVariable("id") int id) throws StockNotFoundException {
 
+		// *** Add annotation/advice for this ***
+		String formattedString = String.format("%s request made to: %s", request.getMethod(), request.getRequestURI());
+		logger.info(formattedString);
+		
 		Stock stock = stockService.getStockById(id);
-
 		return ResponseEntity.status(200).body(stock);
 
 	}
@@ -63,7 +66,7 @@ public class StockController {
 		Stock stock = stockService.addStock(loggedIn.getId(), stockTemplate.getName(), stockTemplate.getSymbol(), stockTemplate.getExchange(),
 				stockTemplate.getPrice(), stockTemplate.getType());
 		
-		logger.info("Added new stock: " + stock + " to user: " + loggedIn);
+		logger.info("Added new stock: \n" + stock + " to user: \n" + loggedIn);
 
 		return ResponseEntity.status(201).body(stock);
 

@@ -24,7 +24,7 @@ import com.revature.model.UserStockKey;
 @Repository
 public class StockDAO {
 	
-	private Logger logger = LoggerFactory.getLogger(StockDAO.class);
+	private static Logger logger = LoggerFactory.getLogger(StockDAO.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
