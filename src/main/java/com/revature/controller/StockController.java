@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,12 +32,16 @@ import jakarta.validation.Valid;
 
 @Controller
 public class StockController {
+	
+	private Logger logger = LoggerFactory.getLogger(StockController.class);
 
 	@Autowired
 	private StockService stockService;
 	
 	@Autowired
 	HttpServletRequest request;
+	
+	private String sessionAttr = "loggedInUser";
 
 	@GetMapping(path = "stock/{id}")
 	@LoggedInOnly
@@ -52,10 +58,12 @@ public class StockController {
 	public ResponseEntity<Object> addStock(@RequestBody @Valid StockTemplate stockTemplate) throws BadParameterException, AddStockException {
 
 		HttpSession session = request.getSession(true);
-		User loggedIn = (User) session.getAttribute("loggedInUser");
+		User loggedIn = (User) session.getAttribute(sessionAttr);
 		
 		Stock stock = stockService.addStock(loggedIn.getId(), stockTemplate.getName(), stockTemplate.getSymbol(), stockTemplate.getExchange(),
 				stockTemplate.getPrice(), stockTemplate.getType());
+		
+		logger.info("Added new stock: " + stock + " to user: " + loggedIn);
 
 		return ResponseEntity.status(201).body(stock);
 
@@ -66,7 +74,7 @@ public class StockController {
 	public ResponseEntity<Object> getAllStocks() {
 		
 		HttpSession session = request.getSession(true);
-		User loggedIn = (User) session.getAttribute("loggedInUser");
+		User loggedIn = (User) session.getAttribute(sessionAttr);
 
 		List<Stock> stocks = stockService.getAllStocks(loggedIn.getId());
 
@@ -89,7 +97,7 @@ public class StockController {
 	public ResponseEntity<Object> deleteStock(@PathVariable("id") int stockId) throws StockNotFoundException, UserNotFoundException {
 		
 		HttpSession session = request.getSession(true);
-		User loggedIn = (User) session.getAttribute("loggedInUser");
+		User loggedIn = (User) session.getAttribute(sessionAttr);
 
 		stockService.deleteStock(loggedIn.getId(), stockId);
 

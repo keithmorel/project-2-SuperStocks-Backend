@@ -10,7 +10,7 @@
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		
+
 		<sonar.projectKey>keithmorel_project-2-SuperStocks-Backend</sonar.projectKey>
 		<sonar.organization>keithmorel</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -81,6 +81,19 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>7.0.0.Final</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.7</version>
+		</dependency>
+
 
 		<!-- *** Testing Dependencies *** -->
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
@@ -133,7 +146,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<finalName>SuperStocks</finalName>
 
