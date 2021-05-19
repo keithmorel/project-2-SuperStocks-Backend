@@ -66,7 +66,8 @@ public class StockController {
 		Stock stock = stockService.addStock(loggedIn.getId(), stockTemplate.getName(), stockTemplate.getSymbol(), stockTemplate.getExchange(),
 				stockTemplate.getPrice(), stockTemplate.getType());
 		
-		logger.info("Added new stock: \n" + stock + " to user: \n" + loggedIn);
+		String formattedString = String.format("Added new stock: %s to user: %s", stock, loggedIn);
+		logger.info(formattedString);
 
 		return ResponseEntity.status(201).body(stock);
 

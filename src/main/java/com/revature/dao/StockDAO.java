@@ -71,7 +71,7 @@ public class StockDAO {
 		
 		User user = session.get(User.class, id);
 		
-		List<UserStock> mappings = session.createQuery("FROM User_Stock WHERE user=:user", UserStock.class)
+		List<UserStock> mappings = session.createQuery("FROM UserStock WHERE user=:user", UserStock.class)
 				.setParameter("user", user)
 				.getResultList();
 		
@@ -97,10 +97,15 @@ public class StockDAO {
 			logger.info("New price is the same as the current price. No change made.");
 			return stock;
 		} else {
-			logger.info("Updating price with new value for stock. Initial value: \n" + stock.getPrice());
+			String formattedString = String.format("Updating price with new value for stock. Initial value: %s", stock.getPrice());
+			logger.info(formattedString);
+			
 			stock.setPrice(price);
 			session.persist(stock);
-			logger.info("Updated stock: " + stock.getPrice());
+			
+			String formattedStringUpdate = String.format("Updated stock: %s ", stock.getPrice());
+			logger.info(formattedStringUpdate);
+			
 			return stock;
 		}
 		
@@ -119,7 +124,7 @@ public class StockDAO {
 			throw new UserNotFoundException("Failed to update stock. User not found.");
 		}
 		
-		UserStock mapping = session.createQuery("FROM User_Stock WHERE user=:user AND stock=:stock", UserStock.class)
+		UserStock mapping = session.createQuery("FROM UserStock WHERE user=:user AND stock=:stock", UserStock.class)
 				.setParameter("user", user)
 				.setParameter("stock", stock)
 				.getSingleResult();
