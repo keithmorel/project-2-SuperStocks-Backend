@@ -15,7 +15,7 @@ public class HashPassword {
 			md.update(password.getBytes());
 			// Get the hash's bytes
 			byte[] bytes = md.digest();
-			// This bytes[] has bytes in decimal format;
+			// This bytes variable has bytes in decimal format.
 			// Convert it to hexadecimal format
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < bytes.length; i++) {
@@ -28,6 +28,10 @@ public class HashPassword {
 		}
 		return generatedPassword;
 
+	}
+	
+	private HashPassword() {
+	    throw new IllegalStateException("Utility class");
 	}
 
 }

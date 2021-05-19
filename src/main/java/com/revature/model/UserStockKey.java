@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Embeddable
 @Data @NoArgsConstructor @AllArgsConstructor
-public class User_Stock_Key implements Serializable {
+public class UserStockKey implements Serializable {
 	
 	@Column
 	private int userId;

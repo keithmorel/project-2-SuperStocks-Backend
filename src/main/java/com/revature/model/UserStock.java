@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor
-public class User_Stock {
+public class UserStock {
 	
 	@EmbeddedId
-	private User_Stock_Key mappingId;
+	private UserStockKey mappingId;
 	
 	@ManyToOne
 	@MapsId("userId")

@@ -8,6 +8,8 @@ import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +18,13 @@ import com.revature.exception.StockNotFoundException;
 import com.revature.exception.UserNotFoundException;
 import com.revature.model.Stock;
 import com.revature.model.User;
-import com.revature.model.User_Stock;
-import com.revature.model.User_Stock_Key;
+import com.revature.model.UserStock;
+import com.revature.model.UserStockKey;
 
 @Repository
 public class StockDAO {
+	
+	private static Logger logger = LoggerFactory.getLogger(StockDAO.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -30,11 +34,9 @@ public class StockDAO {
 
 		Session session = sessionFactory.getCurrentSession();
 
-		Stock stock = (Stock) session.createQuery("FROM Stock WHERE id=:id")
+		return session.createQuery("FROM Stock WHERE id=:id", Stock.class)
 				.setParameter("id", id)
 				.getSingleResult();
-
-		return stock;
 
 	}
 
@@ -51,11 +53,11 @@ public class StockDAO {
 					.setParameter("symbol", symbol)
 					.getSingleResult();
 		} catch (NoResultException e) { // If stock doesn't exist, make it.
-			stock = new Stock(0, name, symbol, exchange, price, type, new HashSet<User_Stock>());
+			stock = new Stock(0, name, symbol, exchange, price, type, new HashSet<>());
 		}
 		
-		User_Stock_Key key = new User_Stock_Key(user.getId(), stock.getId());
-		User_Stock mapping = new User_Stock(key, user, stock);
+		UserStockKey key = new UserStockKey(user.getId(), stock.getId());
+		UserStock mapping = new UserStock(key, user, stock);
 		session.persist(mapping);
 		
 		return stock;
@@ -69,12 +71,12 @@ public class StockDAO {
 		
 		User user = session.get(User.class, id);
 		
-		List<User_Stock> mappings = session.createQuery("FROM User_Stock WHERE user=:user", User_Stock.class)
+		List<UserStock> mappings = session.createQuery("FROM UserStock WHERE user=:user", UserStock.class)
 				.setParameter("user", user)
 				.getResultList();
 		
-		List<Stock> stocks = new ArrayList<Stock>();
-		for (User_Stock mapping: mappings) {
+		List<Stock> stocks = new ArrayList<>();
+		for (UserStock mapping: mappings) {
 			stocks.add(mapping.getStock());
 		}
 		
@@ -91,14 +93,19 @@ public class StockDAO {
 		if (stock == null) {
 			throw new StockNotFoundException("Failed to update stock. Stock not found.");
 		}
-		if (stock.getPrice() == price) {
-			System.out.println("New price is the same as the current price. No change made.");
+		if (stock.getPrice().equals(price)) {
+			logger.info("New price is the same as the current price. No change made.");
 			return stock;
 		} else {
-			System.out.println("Updating price with new value for stock. Initial value: \n" + stock);
+			String formattedString = String.format("Updating price with new value for stock. Initial value: %s", stock.getPrice());
+			logger.info(formattedString);
+			
 			stock.setPrice(price);
 			session.persist(stock);
-			System.out.println("Updated stock: " + stock);
+			
+			String formattedStringUpdate = String.format("Updated stock: %s ", stock.getPrice());
+			logger.info(formattedStringUpdate);
+			
 			return stock;
 		}
 		
@@ -117,7 +124,7 @@ public class StockDAO {
 			throw new UserNotFoundException("Failed to update stock. User not found.");
 		}
 		
-		User_Stock mapping = (User_Stock) session.createQuery("FROM User_Stock WHERE user=:user AND stock=:stock", User_Stock.class)
+		UserStock mapping = session.createQuery("FROM UserStock WHERE user=:user AND stock=:stock", UserStock.class)
 				.setParameter("user", user)
 				.setParameter("stock", stock)
 				.getSingleResult();

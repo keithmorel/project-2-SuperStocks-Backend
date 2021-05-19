@@ -40,7 +40,7 @@ public class UserController {
 		User user = userService.login(loginTemplate.getUsername(), loginTemplate.getPassword());
 
 		HttpSession session = request.getSession(true);
-		session.setAttribute("loggedInUser", user); // *** Look into JWT instead of this ***
+		user.addToSession(session);
 
 		return ResponseEntity.status(200).body(new MessageTemplate("Successfully logged in"));
 
@@ -54,7 +54,7 @@ public class UserController {
 				registerTemplate.getRole());
 
 		HttpSession session = request.getSession(true);
-		session.setAttribute("loggedInUser", user); // *** Look into JWT instead of this ***
+		user.addToSession(session);
 
 		return ResponseEntity.status(201).body(new MessageTemplate("Successfully registered user"));
 
@@ -78,7 +78,7 @@ public class UserController {
 				updateUserTemplate.getEmail(), updateUserTemplate.getFirstName(), updateUserTemplate.getLastName());
 
 		HttpSession session = request.getSession(true);
-		session.setAttribute("loggedInUser", user); // *** Look into JWT instead of this ***
+		user.addToSession(session);
 
 		return ResponseEntity.status(201).body(new MessageTemplate("Successfully updated user information"));
 

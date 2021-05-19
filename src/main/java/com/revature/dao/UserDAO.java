@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.model.User;
 import com.revature.model.UserRole;
-import com.revature.model.User_Stock;
 import com.revature.util.HashPassword;
 
 @Repository
@@ -18,6 +17,30 @@ public class UserDAO {
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	// Next two methods for testing
+	
+	@Transactional
+	public UserRole getRoleById(int id) {
+		
+		Session session = sessionFactory.getCurrentSession();
+		
+		return session.get(UserRole.class, id);
+		
+	}
+	
+	@Transactional
+	public UserRole addUserRole(int id, String role) {
+		
+		Session session = sessionFactory.getCurrentSession();
+		
+		UserRole userRole = new UserRole(id, role);
+		
+		session.save(userRole);
+		
+		return userRole;
+		
+	}
 
 	@Transactional
 	public User getUserByUsernameAndPassword(String username, String password) {
@@ -25,10 +48,8 @@ public class UserDAO {
 		Session session = sessionFactory.getCurrentSession();
 		String hashedPassword = HashPassword.hashPassword(password);
 
-		User user = (User) session.createQuery("FROM User WHERE username=:un AND password=:pw")
+		return session.createQuery("FROM User WHERE username=:un AND password=:pw", User.class)
 				.setParameter("un", username).setParameter("pw", hashedPassword).getSingleResult();
-
-		return user;
 
 	}
 
@@ -40,7 +61,7 @@ public class UserDAO {
 
 		UserRole role = session.get(UserRole.class, roleId);
 
-		User newUser = new User(0, username, hashedPassword, email, firstName, lastName, role, new HashSet<User_Stock>());
+		User newUser = new User(0, username, hashedPassword, email, firstName, lastName, role, new HashSet<>());
 
 		session.persist(newUser);
 
