@@ -63,6 +63,6 @@ public class User {
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@JsonBackReference
-    private Set<User_Stock> mappings;
+    private Set<UserStock> mappings;
 
 }

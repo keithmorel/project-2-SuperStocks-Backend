@@ -12,6 +12,7 @@ import com.revature.exception.BadParameterException;
 import com.revature.exception.RegistrationException;
 import com.revature.exception.UserNotFoundException;
 import com.revature.model.User;
+import com.revature.util.ValidateEmail;
 
 @Service
 public class UserService {
@@ -41,7 +42,7 @@ public class UserService {
 		if (username.trim().equals("") || password.trim().equals("") || email.trim().equals("") || firstName.trim().equals("") ||
 				lastName.trim().equals("") || role.trim().equals("")) {
 			throw new BadParameterException("All info must be provided and not blank");
-		} else if (!email.matches("^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$")) {
+		} else if (!ValidateEmail.validateEmail(email)) {
 			throw new BadParameterException("Email must be of the form '[email]@[website].[domain]'");
 		} else if (role.equals("Admin")) {
 			roleId = 2;
@@ -63,6 +64,8 @@ public class UserService {
 		if (username.trim().equals("") || password.trim().equals("") || email.trim().equals("") || firstName.trim().equals("") ||
 				lastName.trim().equals("")) {
 			throw new BadParameterException("All info must be provided and not blank");
+		} else if (!ValidateEmail.validateEmail(email)) {
+			throw new BadParameterException("Email must be of the form '[email]@[website].[domain]'");
 		}
 		
 		return userDAO.updateUser(id, username, password, email, firstName, lastName);
