@@ -15,7 +15,7 @@ public class HashPassword {
 			md.update(password.getBytes());
 			// Get the hash's bytes
 			byte[] bytes = md.digest();
-			// This bytes variable has bytes in decimal format;
+			// This bytes variable has bytes in decimal format.
 			// Convert it to hexadecimal format
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < bytes.length; i++) {
