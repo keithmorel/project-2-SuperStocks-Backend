@@ -17,6 +17,30 @@ public class UserDAO {
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	// Next two methods for testing
+	
+	@Transactional
+	public UserRole getRoleById(int id) {
+		
+		Session session = sessionFactory.getCurrentSession();
+		
+		return session.get(UserRole.class, id);
+		
+	}
+	
+	@Transactional
+	public UserRole addUserRole(int id, String role) {
+		
+		Session session = sessionFactory.getCurrentSession();
+		
+		UserRole userRole = new UserRole(id, role);
+		
+		session.save(userRole);
+		
+		return userRole;
+		
+	}
 
 	@Transactional
 	public User getUserByUsernameAndPassword(String username, String password) {

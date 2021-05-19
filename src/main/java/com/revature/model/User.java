@@ -1,5 +1,6 @@
 package com.revature.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -31,7 +33,7 @@ import lombok.ToString;
 		@UniqueConstraint(columnNames= {"email"})
 })
 @Data @NoArgsConstructor @AllArgsConstructor
-public class User {
+public class User implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,6 +65,12 @@ public class User {
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@JsonBackReference
-    private Set<UserStock> mappings;
+    private transient Set<UserStock> mappings;
+	
+	public void addToSession(HttpSession session) {
+		
+		session.setAttribute("loggedInUser", this);
+		
+	}
 
 }
