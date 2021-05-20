@@ -23,10 +23,10 @@ public class StockService {
 	private StockDAO stockDAO;
 
 	@Transactional(rollbackFor = { StockNotFoundException.class })
-	public Stock getStockById(int id) throws StockNotFoundException {
+	public Stock getStockBySymbol(String symbol) throws StockNotFoundException {
 		
 		try {
-			return stockDAO.getStock(id);
+			return stockDAO.getStock(symbol);
 		}catch(NoResultException e) {
 			throw new StockNotFoundException("Stock does not exist.");
 		}

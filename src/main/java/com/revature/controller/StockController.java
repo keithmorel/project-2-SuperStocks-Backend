@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +32,7 @@ import com.revature.template.StockTemplate;
 import jakarta.validation.Valid;
 
 @Controller
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class StockController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(StockController.class);
@@ -43,15 +45,15 @@ public class StockController {
 	
 	private String sessionAttr = "loggedInUser";
 
-	@GetMapping(path = "stock/{id}")
+	@GetMapping(path = "stock/{symbol}")
 	@LoggedInOnly
-	public ResponseEntity<Stock> getStockById(@PathVariable("id") int id) throws StockNotFoundException {
+	public ResponseEntity<Stock> getStockBySymbol(@PathVariable("symbol") String symbol) throws StockNotFoundException {
 
 		// *** Add annotation/advice for this ***
 		String formattedString = String.format("%s request made to: %s", request.getMethod(), request.getRequestURI());
 		logger.info(formattedString);
 		
-		Stock stock = stockService.getStockById(id);
+		Stock stock = stockService.getStockBySymbol(symbol);
 		return ResponseEntity.status(200).body(stock);
 
 	}

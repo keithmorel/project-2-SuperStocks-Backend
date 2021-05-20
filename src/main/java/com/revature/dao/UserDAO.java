@@ -73,11 +73,14 @@ public class UserDAO {
 	public User updateUser(int id, String username, String password, String email, String firstName, String lastName) {
 
 		Session session = sessionFactory.getCurrentSession();
-		String hashedPassword = HashPassword.hashPassword(password);
 
 		User userToUpdate = session.get(User.class, id);
+		if (!userToUpdate.getPassword().equals(password)) {
+			password = HashPassword.hashPassword(password);
+		}
+		
 		userToUpdate.setUsername(username);
-		userToUpdate.setPassword(hashedPassword);
+		userToUpdate.setPassword(password);
 		userToUpdate.setEmail(email);
 		userToUpdate.setFirstName(firstName);
 		userToUpdate.setLastName(lastName);
