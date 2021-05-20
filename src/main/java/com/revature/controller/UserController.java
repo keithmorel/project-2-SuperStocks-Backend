@@ -38,7 +38,7 @@ public class UserController {
 			throws BadParameterException, UserNotFoundException {
 
 		User user = userService.login(loginTemplate.getUsername(), loginTemplate.getPassword());
-
+		
 		HttpSession session = request.getSession(true);
 		user.addToSession(session);
 
@@ -80,7 +80,7 @@ public class UserController {
 		HttpSession session = request.getSession(true);
 		user.addToSession(session);
 
-		return ResponseEntity.status(201).body(new MessageTemplate("Successfully updated user information"));
+		return ResponseEntity.status(200).body(new MessageTemplate("Successfully updated user information"));
 
 	}
 
