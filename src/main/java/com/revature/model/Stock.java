@@ -27,7 +27,9 @@ import lombok.ToString;
 		@UniqueConstraint(columnNames= {"name"}),
 		@UniqueConstraint(columnNames= {"symbol"})
 })
-@Data @NoArgsConstructor @AllArgsConstructor
+@Data 
+@NoArgsConstructor 
+@AllArgsConstructor
 public class Stock {
 
 	@Id
