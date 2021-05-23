@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +32,7 @@ import com.revature.template.StockTemplate;
 import jakarta.validation.Valid;
 
 @Controller
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class StockController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(StockController.class);
@@ -42,16 +44,16 @@ public class StockController {
 	HttpServletRequest request;
 	
 	private String sessionAttr = "loggedInUser";
+	private String requestStrFormat = "%s request made to: %s";
 
-	@GetMapping(path = "stock/{id}")
+	@GetMapping(path = "stock/{symbol}")
 	@LoggedInOnly
-	public ResponseEntity<Stock> getStockById(@PathVariable("id") int id) throws StockNotFoundException {
+	public ResponseEntity<Stock> getStockBySymbol(@PathVariable("symbol") String symbol) throws StockNotFoundException {
 
-		// *** Add annotation/advice for this ***
-		String formattedString = String.format("%s request made to: %s", request.getMethod(), request.getRequestURI());
-		logger.info(formattedString);
+		String requestString = String.format(requestStrFormat, request.getMethod(), request.getRequestURI());
+		logger.info(requestString);
 		
-		Stock stock = stockService.getStockById(id);
+		Stock stock = stockService.getStockBySymbol(symbol);
 		return ResponseEntity.status(200).body(stock);
 
 	}
@@ -60,6 +62,9 @@ public class StockController {
 	@LoggedInOnly
 	public ResponseEntity<Object> addStock(@RequestBody @Valid StockTemplate stockTemplate) throws BadParameterException, AddStockException {
 
+		String requestString = String.format(requestStrFormat, request.getMethod(), request.getRequestURI());
+		logger.info(requestString);
+		
 		HttpSession session = request.getSession(true);
 		User loggedIn = (User) session.getAttribute(sessionAttr);
 		
@@ -77,6 +82,9 @@ public class StockController {
 	@LoggedInOnly
 	public ResponseEntity<Object> getAllStocks() {
 		
+		String requestString = String.format(requestStrFormat, request.getMethod(), request.getRequestURI());
+		logger.info(requestString);
+		
 		HttpSession session = request.getSession(true);
 		User loggedIn = (User) session.getAttribute(sessionAttr);
 
@@ -90,6 +98,9 @@ public class StockController {
 	@LoggedInOnly
 	public ResponseEntity<Object> updateStockPrice(@RequestBody @Valid StockTemplate stockTemplate, @PathVariable("id") int id) throws StockNotFoundException {
 
+		String requestString = String.format(requestStrFormat, request.getMethod(), request.getRequestURI());
+		logger.info(requestString);
+		
 		Stock stock = stockService.updateStockPrice(id, stockTemplate.getPrice());
 
 		return ResponseEntity.status(201).body(stock);
@@ -99,6 +110,9 @@ public class StockController {
 	@DeleteMapping(path = "stock/{id}")
 	@LoggedInOnly
 	public ResponseEntity<Object> deleteStock(@PathVariable("id") int stockId) throws StockNotFoundException, UserNotFoundException {
+		
+		String requestString = String.format(requestStrFormat, request.getMethod(), request.getRequestURI());
+		logger.info(requestString);
 		
 		HttpSession session = request.getSession(true);
 		User loggedIn = (User) session.getAttribute(sessionAttr);

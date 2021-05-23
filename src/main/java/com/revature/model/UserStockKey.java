@@ -10,7 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Embeddable
-@Data @NoArgsConstructor @AllArgsConstructor
+@Data 
+@NoArgsConstructor 
+@AllArgsConstructor
 public class UserStockKey implements Serializable {
 	
 	@Column

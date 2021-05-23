@@ -30,12 +30,12 @@ public class StockDAO {
 	private SessionFactory sessionFactory;
 
 	@Transactional
-	public Stock getStock(int id) {
+	public Stock getStock(String symbol) {
 
 		Session session = sessionFactory.getCurrentSession();
 
-		return session.createQuery("FROM Stock WHERE id=:id", Stock.class)
-				.setParameter("id", id)
+		return session.createQuery("FROM Stock WHERE symbol=:symbol", Stock.class)
+				.setParameter("symbol", symbol)
 				.getSingleResult();
 
 	}

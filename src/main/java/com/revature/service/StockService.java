@@ -23,10 +23,10 @@ public class StockService {
 	private StockDAO stockDAO;
 
 	@Transactional(rollbackFor = { StockNotFoundException.class })
-	public Stock getStockById(int id) throws StockNotFoundException {
+	public Stock getStockBySymbol(String symbol) throws StockNotFoundException {
 		
 		try {
-			return stockDAO.getStock(id);
+			return stockDAO.getStock(symbol);
 		}catch(NoResultException e) {
 			throw new StockNotFoundException("Stock does not exist.");
 		}
@@ -57,7 +57,11 @@ public class StockService {
 	@Transactional(rollbackFor = { StockNotFoundException.class })
 	public Stock updateStockPrice(int id, Double price) throws StockNotFoundException {
 
-		return stockDAO.updatePrice(id, price);
+		try {
+			return stockDAO.updatePrice(id, price);	
+		} catch (NullPointerException e) {
+			throw new StockNotFoundException("Failed to update price. Too many requests.");
+		}
 		
 	}
 

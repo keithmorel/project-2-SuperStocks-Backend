@@ -22,7 +22,6 @@ public class UserService {
 	
 	@Transactional(rollbackFor = { UserNotFoundException.class })
 	public User login(String username, String password) throws BadParameterException, UserNotFoundException {
-		
 		if (username.trim().equals("") || password.trim().equals("")) {
 			throw new BadParameterException("Username and password can't be blank");
 		}

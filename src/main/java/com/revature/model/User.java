@@ -32,7 +32,9 @@ import lombok.ToString;
 		@UniqueConstraint(columnNames= {"username"}),
 		@UniqueConstraint(columnNames= {"email"})
 })
-@Data @NoArgsConstructor @AllArgsConstructor
+@Data 
+@NoArgsConstructor 
+@AllArgsConstructor
 public class User implements Serializable{
 	
 	@Id
