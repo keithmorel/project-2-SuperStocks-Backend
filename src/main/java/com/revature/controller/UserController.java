@@ -50,7 +50,7 @@ public class UserController {
 		
 		HttpSession session = request.getSession(false);
 		
-		if (session.getAttribute("loggedInUser") == null ) {
+		if (session == null || session.getAttribute("loggedInUser") == null ) {
 			return ResponseEntity.status(400).body(new MessageTemplate("User is not logged in"));
 		} else {
 			return ResponseEntity.status(200).body(session.getAttribute("loggedInUser"));

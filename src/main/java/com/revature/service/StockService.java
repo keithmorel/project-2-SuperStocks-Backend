@@ -57,7 +57,11 @@ public class StockService {
 	@Transactional(rollbackFor = { StockNotFoundException.class })
 	public Stock updateStockPrice(int id, Double price) throws StockNotFoundException {
 
-		return stockDAO.updatePrice(id, price);
+		try {
+			return stockDAO.updatePrice(id, price);	
+		} catch (NullPointerException e) {
+			throw new StockNotFoundException("Failed to update price. Too many requests.");
+		}
 		
 	}
 
