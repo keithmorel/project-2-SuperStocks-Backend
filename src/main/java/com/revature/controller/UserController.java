@@ -120,8 +120,11 @@ public class UserController {
 		User user = userService.updateUserInfo(id, updateUserTemplate.getUsername(), updateUserTemplate.getPassword(),
 				updateUserTemplate.getEmail(), updateUserTemplate.getFirstName(), updateUserTemplate.getLastName());
 
-		HttpSession session = request.getSession(true);
-		user.addToSession(session);
+		HttpSession session = request.getSession(false);
+		// Update session id ONLY if you are a user
+		if (user.getUserRole().getRoleName().equals("User")) {
+			user.addToSession(session);
+		}
 
 		return ResponseEntity.status(200).body(new MessageTemplate("Successfully updated user information"));
 
