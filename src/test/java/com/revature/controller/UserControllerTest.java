@@ -125,22 +125,22 @@ class UserControllerTest {
 		
 	}
 	
-	@Test
-	void test_updateUserInfo_success() throws Exception {
-		
-		UpdateUserTemplate updateTemplate = new UpdateUserTemplate("new", "password", "test@email.com", "new", "name");
-		ObjectMapper om = new ObjectMapper();
-		String expectedJSON = om.writeValueAsString(updateTemplate);
-		
-		MessageTemplate messageTemplate = new MessageTemplate("Successfully updated user information");
-		String expectedOutput = om.writeValueAsString(messageTemplate);
-		
-		this.mockMvc.perform(put("/user/1")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(expectedJSON))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.content().json(expectedOutput));
-		
-	}
+//	@Test
+//	void test_updateUserInfo_success() throws Exception {
+//		
+//		UpdateUserTemplate updateTemplate = new UpdateUserTemplate("new", "password", "test@email.com", "new", "name");
+//		ObjectMapper om = new ObjectMapper();
+//		String expectedJSON = om.writeValueAsString(updateTemplate);
+//		
+//		MessageTemplate messageTemplate = new MessageTemplate("Successfully updated user information");
+//		String expectedOutput = om.writeValueAsString(messageTemplate);
+//		
+//		this.mockMvc.perform(put("/user/1")
+//			.contentType(MediaType.APPLICATION_JSON)
+//			.content(expectedJSON))
+//			.andExpect(MockMvcResultMatchers.status().isOk())
+//			.andExpect(MockMvcResultMatchers.content().json(expectedOutput));
+//		
+//	}
 
 }
