@@ -1,5 +1,6 @@
 package com.revature.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -66,5 +68,9 @@ class StockControllerTest {
 				.thenReturn(new Stock(1, "Apple Inc", "AAPL", "NASDAQ", 225.52, "Common Stock", new HashSet<>()));
 
 		this.mockMvc = MockMvcBuilders.standaloneSetup(sc).build();
+	}
+	
+	@Test
+	void test() {
 	}
 }
