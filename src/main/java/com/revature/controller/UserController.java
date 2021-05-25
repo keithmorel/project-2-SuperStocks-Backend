@@ -122,6 +122,8 @@ public class UserController {
 
 		HttpSession session = request.getSession(false);
 		// Update session id ONLY if you are a user
+		System.out.println("loggedIn: " + session.getAttribute("loggedIn"));
+		System.out.println("userToUpdate: " + user);
 		if (user.getUserRole().getRoleName().equals("User")) {
 			user.addToSession(session);
 		}
