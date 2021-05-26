@@ -3,6 +3,7 @@ package com.revature.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,9 +63,17 @@ public class AdminController {
 		String requestString = String.format(requestStrFormat, request.getMethod(), request.getRequestURI());
 		logger.info(requestString);
 		
-		userService.updateUserInfo(id, updateUserTemplate.getUsername(), updateUserTemplate.getPassword(),
+		User updatedUser = userService.updateUserInfo(id, updateUserTemplate.getUsername(), updateUserTemplate.getPassword(),
 				updateUserTemplate.getEmail(), updateUserTemplate.getFirstName(), updateUserTemplate.getLastName());
 
+		HttpSession session = request.getSession(true);
+		User loggedIn = (User) session.getAttribute("loggedInUser");
+		
+		// If you are editing your own information, update the session to reflect this
+		if (loggedIn.getId() == updatedUser.getId()) {
+			updatedUser.addToSession(session);
+		}
+		
 		return ResponseEntity.status(200).body(new MessageTemplate("Successfully updated user information"));
 		
 	}
