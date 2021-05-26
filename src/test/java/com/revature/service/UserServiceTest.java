@@ -146,18 +146,18 @@ class UserServiceTest {
 
 	}
 
-//	@Test
-//	void test_updateUserInfo_success() throws BadParameterException {
-//
-//		User actual = userService.updateUserInfo(1, "newusername", "newpassword", "new@email.com", "newfirst", "newlast");
-//
-//		UserRole userRole = userDAO.getRoleById(1);
-//		User expected = new User(1, "newusername", "newpassword", "new@email.com", "newfirst", "newlast", userRole,
-//				new HashSet<>());
-//
-//		assertEquals(expected, actual);
-//
-//	}
+	@Test
+	void test_updateUserInfo_success() throws BadParameterException {
+
+		User actual = userService.updateUserInfo(1, "newusername", "newpassword", "new@email.com", "newfirst", "newlast");
+
+		UserRole userRole = userDAO.getRoleById(1);
+		User expected = new User(1, "newusername", "newpassword", "new@email.com", "newfirst", "newlast", userRole,
+				new HashSet<>());
+
+		assertEquals(expected, actual);
+
+	}
 
 	@Test
 	void test_updateUserInfo_fail_blankParams() throws BadParameterException {

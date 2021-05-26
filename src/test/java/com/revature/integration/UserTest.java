@@ -186,30 +186,30 @@ class UserTest {
 		
 	}
 	
-//	@Test
-//	@Order(2)
-//	void test_updateUserInfo_success() throws Exception {
-//		MockHttpSession session = this.session;
-//		UserRole userRole = new UserRole(1, "User");
-//		User user = new User(1, "username", "5f4dcc3b5aa765d61d8327deb882cf99", "user@gmail.com", "first", "last", userRole, new HashSet<>());
-//		session.setAttribute("loggedInUser", user);
-//		
-//		UpdateUserTemplate ut = new UpdateUserTemplate("username", "password", "user@gmail.com", "newFirst", "newLast");
-//		String jsonInput = objectMapper.writeValueAsString(ut);
-//
-//		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
-//				.put("/user/1")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.content(jsonInput)
-//				.session(session);
-//		
-//		MessageTemplate expected = new MessageTemplate("Successfully updated user information");
-//		String expectedJson = objectMapper.writeValueAsString(expected);
-//		
-//		this.mockMvc.perform(builder)
-//			.andExpect(MockMvcResultMatchers.status().isOk())
-//			.andExpect(MockMvcResultMatchers.content().json(expectedJson));
-//		
-//	}
+	@Test
+	@Order(2)
+	void test_updateUserInfo_success() throws Exception {
+		MockHttpSession session = this.session;
+		UserRole userRole = new UserRole(1, "User");
+		User user = new User(1, "username", "5f4dcc3b5aa765d61d8327deb882cf99", "user@gmail.com", "first", "last", userRole, new HashSet<>());
+		session.setAttribute("loggedInUser", user);
+		
+		UpdateUserTemplate ut = new UpdateUserTemplate("username", "password", "user@gmail.com", "newFirst", "newLast");
+		String jsonInput = objectMapper.writeValueAsString(ut);
+
+		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
+				.put("/user/1")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jsonInput)
+				.session(session);
+		
+		MessageTemplate expected = new MessageTemplate("Successfully updated user information");
+		String expectedJson = objectMapper.writeValueAsString(expected);
+		
+		this.mockMvc.perform(builder)
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().json(expectedJson));
+		
+	}
 
 }
