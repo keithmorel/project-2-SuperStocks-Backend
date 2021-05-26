@@ -67,12 +67,11 @@ public class UserController {
 		
 		User user = userService.login(loginTemplate.getUsername(), loginTemplate.getPassword());
 		
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			session = request.getSession(true);
-		}
+		HttpSession session = request.getSession(true);
+		
 		user.addToSession(session);
 		
+		System.out.println("logged in as: " + session.getAttribute("loggedIn"));
 
 		return ResponseEntity.status(200).body(new MessageTemplate("Successfully logged in"));
 
@@ -88,10 +87,7 @@ public class UserController {
 				registerTemplate.getEmail(), registerTemplate.getFirstName(), registerTemplate.getLastName(),
 				registerTemplate.getRole());
 
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			session = request.getSession(true);
-		}
+		HttpSession session = request.getSession(true);
 		user.addToSession(session);
 
 		return ResponseEntity.status(201).body(new MessageTemplate("Successfully registered user"));
@@ -120,13 +116,8 @@ public class UserController {
 		User user = userService.updateUserInfo(id, updateUserTemplate.getUsername(), updateUserTemplate.getPassword(),
 				updateUserTemplate.getEmail(), updateUserTemplate.getFirstName(), updateUserTemplate.getLastName());
 
-		HttpSession session = request.getSession(false);
-		// Update session id ONLY if you are a user
-		System.out.println("loggedIn: " + session.getAttribute("loggedIn"));
-		System.out.println("userToUpdate: " + user);
-		if (user.getUserRole().getRoleName().equals("User")) {
-			user.addToSession(session);
-		}
+		HttpSession session = request.getSession(true);
+		user.addToSession(session);
 
 		return ResponseEntity.status(200).body(new MessageTemplate("Successfully updated user information"));
 

@@ -12,11 +12,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.revature.annotation.AdminOnly;
+import com.revature.exception.BadParameterException;
 import com.revature.exception.UserNotFoundException;
 import com.revature.model.User;
 import com.revature.service.AdminService;
+import com.revature.service.UserService;
+import com.revature.template.MessageTemplate;
+import com.revature.template.UpdateUserTemplate;
+
+import jakarta.validation.Valid;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
@@ -26,6 +34,9 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private HttpServletRequest request;
@@ -42,6 +53,20 @@ public class AdminController {
 		User user = adminService.getUserById(id);
 
 		return ResponseEntity.status(200).body(user);
+	}
+	
+	@PutMapping(path="admin/user/{id}")
+	@AdminOnly
+	public ResponseEntity<Object> updateUserById(@PathVariable("id") int id, @RequestBody @Valid UpdateUserTemplate updateUserTemplate) throws BadParameterException {
+		
+		String requestString = String.format(requestStrFormat, request.getMethod(), request.getRequestURI());
+		logger.info(requestString);
+		
+		userService.updateUserInfo(id, updateUserTemplate.getUsername(), updateUserTemplate.getPassword(),
+				updateUserTemplate.getEmail(), updateUserTemplate.getFirstName(), updateUserTemplate.getLastName());
+
+		return ResponseEntity.status(200).body(new MessageTemplate("Successfully updated user information"));
+		
 	}
 
 	@GetMapping(path = "user")
