@@ -2,6 +2,9 @@
 
 ## Super Stocks is a lightweight application for tracking stocks. Each user will have a dashboard that will provide a brief overview of their chosen stocks. Users will also be able to access more detailed information about indivial stocks.
 
+## Live Demo Running on:  
+- http://ec2-54-82-79-227.compute-1.amazonaws.com:8080/SuperStocker 
+
 ## Frontend Repository:
 - https://github.com/hpatel183/project-2-SuperStocks-Frontend
 
